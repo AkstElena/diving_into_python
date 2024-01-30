@@ -4,3 +4,4 @@ print(res)  # map объект
 # print(list(res))  # вывод в списке
 print(*res)
 
+
