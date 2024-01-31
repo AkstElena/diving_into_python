@@ -10,7 +10,7 @@
 """
 
 text = '25/123/2/81/35/48'.split('/')
-a, b, c, *d = text
+a, b, c, *d = list(map(int,text))  # добавлена функция map, чтобы перевести в число
 new_dict = {b: a, c: tuple(d)}
 print(new_dict)
 

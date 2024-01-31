@@ -15,12 +15,10 @@ print(list_numbers)
 
 def sort_list(ist_numbers: list[int]) -> list[int]:
     list_sort = list_numbers.copy()
-    for i in range(0, len(list_sort) - 1):
-        for j in range(0, len(list_sort) - 1):
+    for i in range(len(list_sort) - 1):
+        for j in range(len(list_sort) - 1 - i):  # оптимизация, сокращение итераций
             if list_sort[j] > list_sort[j + 1]:
-                tmp = list_sort[j]
-                list_sort[j] = list_sort[j + 1]
-                list_sort[j + 1] = tmp
+                list_sort[j], list_sort[j + 1] = list_sort[j + 1], list_sort[j]
     return list_sort
 
 

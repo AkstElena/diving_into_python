@@ -14,7 +14,6 @@ list_bonus = ['10.25%', '20.8%', '8.02%']
 
 
 def dict_bonus(names, salaries, bonus):
-    # my_list = zip(list_names, list_salaries, list_bonus)
     return {name: round(salary * float(bonus.rstrip('%')) / 100, 2)
             for name, salary, bonus in zip(list_names, list_salaries, list_bonus)}
 

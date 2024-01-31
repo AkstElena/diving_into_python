@@ -28,7 +28,7 @@
 
 
 def num_prime(num):  # реализуем функцию проверки числа на простоту
-    for i in range(2, num, 2):
+    for i in range(2, num):
         if not num % i:
             return False
     return True

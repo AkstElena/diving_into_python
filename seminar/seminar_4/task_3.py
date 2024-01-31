@@ -11,8 +11,8 @@ input_str = '5 10'
 
 
 def uni_dict(data):
-    res = dict()
-    return {chr(int(item)): int(item) for item in sorted(data.split())}
+    nums = list(map(int, data.split()))  # создаем лист из чисел
+    return {chr(int(item)): item for item in range(min(nums), max(nums)+1)}
 
 
 print(uni_dict(input_str))
