@@ -10,36 +10,30 @@
 ✔ количество файлов, по умолчанию 42
 ✔ Имя файла и его размер должны быть в рамках переданного диапазона.
 """
-from random import choices, randint
-from string import ascii_lowercase
-from os import getcwd, makedirs, chdir
+from random import choices, randint, randbytes
+from string import ascii_lowercase  # все символы английского алфавита в нижнем регистре
 
-def func(ext, min_len=6, max_len=30, min_bytes=256, max_bytes=4096, files=42):
+MIN_LEN = 6
+MAX_LEN = 30
+MIN_SIZE = 256
+MAX_SIZE = 4096
+COUNT_FILES = 42
+
+
+def func(ext, min_len=MIN_LEN, max_len=MAX_LEN, min_bytes=MIN_SIZE, max_bytes=MAX_SIZE, files=COUNT_FILES):
+    files = files if (0 < files <= COUNT_FILES) else randint(1,
+                                                             COUNT_FILES)  # проверка на количество файлов, правильное ли
     for _ in range(files):
-        name = ''.join(choices(ascii_lowercase, k=randint(min_len, max_len))) + ext
+        cur_min_len = min_len if (MIN_LEN <= min_len < MAX_LEN) else MIN_LEN
+        cur_max_len = max_len if (MIN_LEN < max_len <= MAX_LEN) else MAX_LEN
+        cur_min_bytes = min_bytes if (MIN_SIZE <= min_bytes < MAX_SIZE) else MIN_SIZE
+        cur_max_bytes = max_bytes if (MIN_SIZE < max_bytes <= MAX_SIZE) else MAX_SIZE
+        name = ''.join(choices(ascii_lowercase, k=randint(cur_min_len, cur_max_len))) + '.' + ext[:3]
         with open(name, 'wb') as data:
-            pass
+            data.write(randbytes(randint(cur_min_bytes, cur_max_bytes)))
 
-func('.txt')
 
-def func_2(files=10, **kwargs):
-    values = []
-    for value in kwargs.values():
-        values.append(value)
-    for _ in range(files):
-        ext = str(*choices(values))
-        func(ext, min_len=6, max_len=30, min_bytes=256, max_bytes=4096, files=5)
+if __name__ == '__main__':
+    func('txt', min_len=3, max_len=9, files=3)
 
-func_2(5, a='.txt', b='.doc', c='.exe')
 
-def func_3(dir):
-    my_path = getcwd() + dir
-    try:
-        makedirs(my_path)
-        chdir(my_path)
-    except FileExistsError:
-        chdir(my_path)
-    func_2(5, a='.txt', b='.doc', c='.exe')
-    chdir('..')
-
-func_3('test_dir')

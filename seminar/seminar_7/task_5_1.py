@@ -8,22 +8,15 @@
 ✔ Внутри используйте вызов функции из прошлой задачи.
 """
 
-from random import choices
-from os import getcwd, makedirs, chdir
-
 from task_4 import func
 
-COUNT_FILES = 5
 
-
-def func_2(files=COUNT_FILES, **kwargs):
-    values = []
-    for value in kwargs.values():
-        values.append(value)
-    for _ in range(files):
-        ext = str(*choices(values))
-        func(ext, min_len=3, max_len=9, files=1)  # поставила значения, чтобы много не создавалось
-
+def gen_some_ext_files(**kwargs):
+    if kwargs:
+        for k, v in kwargs.items():
+            func(k, min_len=3, max_len=9, files=v)
 
 if __name__ == '__main__':
-    func_2(5, a='txt', b='doc', c='exe')
+    gen_some_ext_files(txt=3, doc=2, exe=1)
+
+

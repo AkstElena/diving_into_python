@@ -7,17 +7,16 @@
 ✔ Количество строк и имя файла передаются как аргументы функции.
 """
 
-from random import randint, uniform
+from random import randint, uniform  # для плавающих цифр
 
-
-def rnd_nums():
-    return f'{str(randint(-1000, 1000))} | {str(round(uniform(-1000, 1000), 3))}\n'
+MIN_LIMIT = -1000
+MAX_LIMIT = 1000
 
 
 def write_nums(name_file, count):
-    for _ in range(count):
-        with open(name_file, 'a', encoding='utf-8') as f:
-            f.write(rnd_nums())
+    with open(name_file, 'a', encoding='utf-8') as f:
+        for _ in range(count):
+            f.write(f'{randint(MIN_LIMIT, MAX_LIMIT)} | {round(uniform(MIN_LIMIT, MAX_LIMIT), 3)}\n')
 
 
 write_nums('text_nums.txt', 5)
