@@ -23,48 +23,40 @@ new_file_008.doc, test.doc, new_file_004.doc, new_file_005.doc, new_file_007.doc
 """
 import os
 
-DIRECTORY_NAME = 'test_folder'
-START_RANGE = 0
-END_RANGE = 0
+folder_name = 'test_folder'
 
 
-def rename_files(desired_name="new_file_", num_digits=3, source_ext="txt", target_ext="doc",
-                 range_name=(START_RANGE, END_RANGE)):
-    if not os.path.exists(DIRECTORY_NAME):
-        result = print("Такой папки нет")
-    else:
-        os.chdir(DIRECTORY_NAME)
-        count = 1
-        number = '{:0' + str(num_digits) + 'd}'  # чтобы бы выводилось три цифры после имени файла
-        for file in os.listdir('.'):
-            file_name, ext = ''.join(file.split('.')[:-1]), file.split('.')[-1]
-            if ext == source_ext:
-                new_file_name = file_name[range_name[0]:range_name[1]] + desired_name + number.format(
-                    count) + '.' + target_ext
-                os.rename(file, new_file_name)
-                count += 1
-        result = print(*os.listdir('.'), sep=', ')
-    return result
+def rename_files(desired_name, num_digits, source_ext, target_ext, name_range=None):
+    new_names = []
 
+    # Получаем список файлов в текущей директории
+    files = os.listdir('test_folder')
 
-# автотест
-# import os
-#
-# # DIRECTORY_NAME = 'test_folder'
-# START_RANGE = 0
-# END_RANGE = 0
-#
-# def rename_files(desired_name="new_file_", num_digits=3, source_ext="txt", target_ext="doc",
-#                  range_name=(START_RANGE, END_RANGE)):
-#     os.chdir('test_folder')
-#     count = 1
-#     number = '{:0' + str(num_digits) + 'd}'  # чтобы бы выводилось три цифры после имени файла
-#     for file in os.listdir('.'):
-#         file_name, ext = ''.join(file.split('.')[:-1]), file.split('.')[-1]
-#         if ext == source_ext:
-#             new_file_name = file_name[range_name[0]:range_name[1]] + desired_name + number.format(
-#                 count) + '.' + target_ext
-#             os.rename(file, new_file_name)
-#             count += 1
-#
+    # Фильтруем только нужные файлы с указанным расширением
+    filtered_files = [file for file in files if file.endswith(source_ext)]
 
+    # Сортируем файлы по имени
+    filtered_files.sort()
+
+    # Задаем начальный номер для порядкового номера
+    num = 1
+
+    # Переименовываем файлы
+    for file in filtered_files:
+        # Получаем имя файла без расширения
+        name = os.path.splitext(file)[0]
+
+        # Если задан диапазон, обрезаем имя файла
+        if name_range:
+            name = name[name_range[0] - 1:name_range[1]]
+
+        # Создаем новое имя с желаемым именем, порядковым номером и новым расширением
+        new_name = desired_name + str(num).zfill(num_digits) + '.' + target_ext
+
+        # Переименовываем файл
+        path_old = os.path.join(os.getcwd(), folder_name, file)
+        path_new = os.path.join(os.getcwd(), folder_name, new_name)
+        os.rename(path_old, path_new)
+
+        # Увеличиваем порядковый номер
+        num += 1

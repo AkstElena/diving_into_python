@@ -21,50 +21,36 @@ new_file_008.doc, test.doc, new_file_004.doc, new_file_005.doc, new_file_007.doc
 
 
 """
+
+import random
+import string
 import os
 
-DIRECTORY_NAME = 'test_folder'
-START_RANGE = 0
-END_RANGE = 0
+
+def create_random_files(quantity, directory):
+    file_ext = ['txt', 'jpeg', 'mov', 'mp3', 'doc']
+    os.mkdir(directory)
+    os.chdir(directory)
+    for _ in range(quantity):
+        name = ''.join(random.sample(string.ascii_lowercase, 7)) + '.' + random.choice(file_ext)
+        with open(name, 'w', encoding='UTF-8') as file:
+            file.write(name)
 
 
-def rename_files(desired_name="new_file_", num_digits=3, source_ext="txt", target_ext="doc",
-                 range_name=(START_RANGE, END_RANGE)):
-    if not os.path.exists(DIRECTORY_NAME):
-        result = print("Такой папки нет")
+# create_random_files(10, 'test_folder')
+
+def rename_group(path=os.getcwd(), new_name='', count=2, in_ext='', out_ext='___', limits=(0, 7)):
+    counter = 1
+    if os.path.isdir(path):
+        for file in os.listdir(path):
+            name, ext = file.rsplit('.', 1)
+            if ext == in_ext or not in_ext:
+                re_name = f'{name[limits[0]:limits[1]]}{new_name if new_name else ""}_{counter:0>{count}}.{out_ext}'
+                os.rename(os.path.join(path, file), os.path.join(path, re_name))
+                counter += 1
+        return f'Было переименовано {counter - 1} файлов'
     else:
-        os.chdir(DIRECTORY_NAME)
-        count = 1
-        number = '{:0' + str(num_digits) + 'd}'  # чтобы бы выводилось три цифры после имени файла
-        for file in os.listdir('.'):
-            file_name, ext = ''.join(file.split('.')[:-1]), file.split('.')[-1]
-            if ext == source_ext:
-                new_file_name = file_name[range_name[0]:range_name[1]] + desired_name + number.format(
-                    count) + '.' + target_ext
-                os.rename(file, new_file_name)
-                count += 1
-        result = print(*os.listdir('.'), sep=', ')
-    return result
+        return 'Это не та директория'
 
 
-# автотест
-# import os
-#
-# # DIRECTORY_NAME = 'test_folder'
-# START_RANGE = 0
-# END_RANGE = 0
-#
-# def rename_files(desired_name="new_file_", num_digits=3, source_ext="txt", target_ext="doc",
-#                  range_name=(START_RANGE, END_RANGE)):
-#     os.chdir('test_folder')
-#     count = 1
-#     number = '{:0' + str(num_digits) + 'd}'  # чтобы бы выводилось три цифры после имени файла
-#     for file in os.listdir('.'):
-#         file_name, ext = ''.join(file.split('.')[:-1]), file.split('.')[-1]
-#         if ext == source_ext:
-#             new_file_name = file_name[range_name[0]:range_name[1]] + desired_name + number.format(
-#                 count) + '.' + target_ext
-#             os.rename(file, new_file_name)
-#             count += 1
-#
-
+rename_group(path='test_folder', in_ext='mov', out_ext='AVI', new_name="NEW", limits=(3, 6))
