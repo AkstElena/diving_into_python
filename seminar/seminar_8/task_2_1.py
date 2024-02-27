@@ -15,7 +15,7 @@ def load_json(path):
     try:
         with open(path, 'r', encoding='UTF-8') as file:
             return json.load(file)
-    except:
+    except FileNotFoundError as e:
         return {}
 
 
@@ -25,9 +25,9 @@ def save_json(path, data):
 
 
 def enter_name():
-    while name := input('Введите имя (ENTER для выхода): '):
+    while name := input('Введите имя (ENTER для выхода): ').capitalize():
         id_list = []
-        user_data = load_json('workers.json')
+        user_data = load_json('users.json')
         for user in user_data.values():
             for user_id in user:
                 id_list.append(user_id)
@@ -48,7 +48,8 @@ def enter_name():
             user_data[user_lvl][user_id] = name
         else:
             user_data[user_lvl] = {user_id: name}
-        save_json('workers.json', user_data)
+        save_json('users.json', user_data)
 
 
-enter_name()
+if __name__ == '__main__':
+    enter_name()
