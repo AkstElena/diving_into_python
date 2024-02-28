@@ -18,7 +18,7 @@ def input_number():
                 number = int(string_input)
                 print(f'Введено число {number}. Тип числа {type(number)}: целое ')
                 return number
-        except ValueError as e:
+        except ValueError:
             print('Необходимо ввести простое или вещественное число.\nПопробуйте еще раз')
 
 
