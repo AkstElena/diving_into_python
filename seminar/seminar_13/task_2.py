@@ -7,11 +7,11 @@
 """
 
 
-def dict_get(my_dict, key, value="default"):
+def dict_get(my_dict, key, value=None):
     try:
         print(my_dict[key])
         return my_dict[key]
-    except KeyError as e:
+    except KeyError:
         print(f'Введенного ключа {key} нет в словаре {my_dict}.\n'
               f'Результат работы функции значение по умолчанию: {value}')
         return value
@@ -19,4 +19,4 @@ def dict_get(my_dict, key, value="default"):
 
 if __name__ == '__main__':
     new_dict = {'Kate': 21, 5: 28, 'sort': (5, 12, 21)}
-    dict_get(new_dict, 5)
+    dict_get(new_dict, 1)
