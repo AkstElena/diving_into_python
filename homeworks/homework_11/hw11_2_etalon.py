@@ -40,25 +40,31 @@ Text is Запись 1 and number is 42. Also ['Запись 1'] and [42]
 Text is Запись 2 and number is 3.14. Also ['Запись 1', 'Запись 2'] and [42, 3.14]
 """
 
+from typing import Union
+
 
 class Archive:
+    _instance = None
     archive_text = []
     archive_number = []
 
-    # def __new__(cls, *args, **kwargs):
-    #     _ins
+    def __new__(cls, text: str, number: Union[int, float]):
+        if cls._instance is None:
+            cls._instance = super(Archive, cls).__new__(cls)
+            cls.archive_text = []
+            cls.archive_number = []
+            return cls._instance
+        return cls._instance
 
-    def __init__(self, text, number):
+    def __init__(self, text, number: Union[int, float]):
         self.text = text
-        self.archive_text.append(text)
         self.number = number
-        self.archive_number.append(number)
-
-    def __str__(self):
-        return f'Text is {self.text} and number is {self.number}. Also {self.archive_text} and {self.archive_number}'
+        Archive.archive_text.append(self.text)
+        Archive.archive_number.append(self.number)
 
     def __repr__(self):
-        return f"Archive('{self.text}', {self.number})"
+        return f'Text is {self.text} and number is {self.number}. ' \
+               f'Also {Archive.archive_text} and {Archive.archive_number}'
 
 
 if __name__ == '__main__':
@@ -66,4 +72,4 @@ if __name__ == '__main__':
     print(archive1)
     archive2 = Archive("Запись 2", 3.14)
     print(archive2)
-    print(repr(archive1), repr(archive2))
+
