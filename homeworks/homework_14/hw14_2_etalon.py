@@ -1,15 +1,8 @@
-"""
-Исключение NegativeValueError
-Добавьте в задачу Rectangle, которую писали ранее, исключение NegativeValueError, которое выбрасывается при некорректных
- значениях ширины и высоты, как при создании объекта, так и при установке их через сеттеры.
-"""
-
-
 class NegativeValueError(ValueError):
     pass
 
-
 class Rectangle:
+
     def __init__(self, width, height=None):
         if width <= 0:
             raise NegativeValueError(f'Ширина должна быть положительной, а не {width}')
@@ -64,14 +57,33 @@ class Rectangle:
         return Rectangle(width, height)
 
 
+import unittest
+
+class TestRectangle(unittest.TestCase):
+
+    def test_width(self):
+        r1 = Rectangle(5)
+        self.assertEqual(r1.width, 5)
+
+    def test_height(self):
+        r2 = Rectangle(3, 4)
+        self.assertEqual(r2.height, 4)
+
+    def test_perimeter(self):
+        r1 = Rectangle(5)
+        self.assertEqual(r1.perimeter(), 20)
+
+    def test_area(self):
+        r2 = Rectangle(3, 4)
+        self.assertEqual(r2.area(), 12)
+
+    def test_addition(self):
+        r1 = Rectangle(5)
+        r2 = Rectangle(3, 4)
+        r3 = r1 + r2
+        self.assertEqual(r3.width, 8)
+        self.assertEqual(r3.height, 6.0)
+
+
 if __name__ == '__main__':
-    r = Rectangle(-2)
-    print(r)
-
-    r = Rectangle(5, -3)
-
-    r = Rectangle(4, 4)
-    r.width = -3
-
-    r = Rectangle(4, 4)
-    r.height = -3
+    unittest.main(verbosity=2)
