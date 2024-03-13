@@ -65,4 +65,4 @@ def traverse_directory(directory_path):
 if __name__ == '__main__':
     print(args)
     # traverse_directory('C:\Elena\GeekBrains\diving_into_python\lecture')
-    traverse_directory(args.path)
+    traverse_directory(args.path)  # запуск через конфигуратор
